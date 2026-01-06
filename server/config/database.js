@@ -4,15 +4,15 @@ require("dotenv").config();
 const { MONGODB_URL } = process.env;
 
 exports.connect = () => {
-	mongoose
-		.connect(MONGODB_URL, {
-			useNewUrlparser: true,
-			useUnifiedTopology: true,
-		})
-		.then(console.log(`DB Connection Success`))
-		.catch((err) => {
-			console.log(`DB Connection Failed`);
-			console.log(err);
-			process.exit(1);
-		});
+  mongoose
+    .connect(MONGODB_URL, {
+      useNewUrlParser: true,   // ✅ Fixed typo
+      useUnifiedTopology: true,
+    })
+    .then(() => console.log("DB Connection Success")) // ✅ Fixed
+    .catch((err) => {
+      console.log("DB Connection Failed");
+      console.log(err.message); // Show only message for clarity
+      process.exit(1);
+    });
 };
