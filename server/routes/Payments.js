@@ -7,7 +7,7 @@ const {
   verifyPayment,
   sendPaymentSuccessEmail,
   getRazorpayKey, // ✅ ADD THIS
-} = require("../controllers/payments")
+} = require("../controllers/Payments")
 
 const { auth, isInstructor, isStudent, isAdmin } = require("../middleware/auth")
 
