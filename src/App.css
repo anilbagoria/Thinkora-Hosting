@@ -97,10 +97,23 @@ details > summary::-webkit-details-marker {
     rgba(17, 30, 50, 0.38) 104.96%
   );
   /* backdrop-filter: blur(26px); */
+  overflow-x: auto;
+  max-width: 100%;
 }
 .homepage_bg {
   background: url("../src/assets/Images/bghome.svg");
-  /* background-size: contain; */
+  background-position: center;
+  background-size: cover;
+}
+@media (max-width: 768px) {
+  .codeblock1,
+  .codeblock2 {
+    width: 240px;
+    height: 180px;
+    left: 50% !important;
+    top: 20px !important;
+    transform: translateX(-50%) !important;
+  }
 }
 
 @keyframes spinner-bulqg1 {
@@ -243,4 +256,16 @@ details > summary::-webkit-details-marker {
 }
 .section_heading {
   @apply text-2xl font-bold text-richblack-5 lg:text-4xl;
+}
+
+/* Hide native password reveal/clear buttons on various browsers */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-textfield-decoration-container,
+input[type="password"]::-webkit-textfield-decoration,
+input[type="password"]::-webkit-password-auto-fill-button {
+  display: none !important;
 }
