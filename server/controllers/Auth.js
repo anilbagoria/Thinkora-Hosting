@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken")
 const otpGenerator = require("otp-generator")
 const mailSender = require("../utils/mailSender")
 const { passwordUpdated } = require("../mail/templates/passwordUpdate")
+const emailTemplate = require("../mail/templates/emailVerificationTemplate")
 const Profile = require("../models/Profile")
 require("dotenv").config()
 
@@ -274,26 +275,32 @@ exports.sendotp = async (req, res) => {
     }
     
     const otpPayload = { email, otp }
-    
-    // ✅ FIXED: Add error handling for OTP creation and email sending
+
     try {
       const otpBody = await OTP.create(otpPayload)
-      console.log("✅ OTP Created and Email Sent Successfully", otpBody)
+      console.log("✅ OTP Created Successfully", otpBody)
+
+      // Send verification email immediately and fail if email sending fails
+      const emailResult = await mailSender(
+        email,
+        "Verification Email from Thinkora",
+        emailTemplate(otp)
+      )
+      console.log("✅ OTP Email send response:", emailResult.response)
+
+      res.status(200).json({
+        success: true,
+        message: `OTP Sent Successfully to ${email}`,
+      })
     } catch (otpError) {
       console.error("❌ Error creating OTP or sending email:", otpError.message)
-      
+
       return res.status(500).json({
         success: false,
         message: "Failed to send OTP. Please check server logs or email configuration.",
         error: process.env.NODE_ENV === "development" ? otpError.message : undefined,
       })
     }
-    
-    // ✅ FIXED: Don't expose OTP in response (security issue)
-    res.status(200).json({
-      success: true,
-      message: `OTP Sent Successfully to ${email}`,
-    })
   } catch (error) {
     console.error("❌ Signup OTP Error:", error.message)
     return res.status(500).json({ 
