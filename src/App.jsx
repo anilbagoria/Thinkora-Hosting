@@ -3,14 +3,14 @@ import "./App.css"
 // Redux
 import { useDispatch, useSelector } from "react-redux"
 // React Router
-import { Route, Routes, useNavigate } from "react-router-dom"
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
 
 // Components
 import Navbar from "./components/Common/Navbar"
 import OpenRoute from "./components/core/Auth/OpenRoute"
 import PrivateRoute from "./components/core/Auth/PrivateRoute"
 import AddCourse from "./components/core/Dashboard/AddCourse"
-import Cart from "./components/core/Dashboard/Cart"
+import Cart from "./components/core/Dashboard/InstructorCourses/Cart"
 import EditCourse from "./components/core/Dashboard/EditCourse"
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses"
 import Instructor from "./components/core/Dashboard/Instructor"
@@ -41,15 +41,15 @@ function App() {
   const { user } = useSelector((state) => state.profile)
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      const token = JSON.parse(localStorage.getItem("token"))
+    const token = localStorage.getItem("token")
+    if (token) {
       dispatch(getUserDetails(token, navigate))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div className="flex min-h-screen w-screen flex-col bg-richblack-900 font-inter">
+    <div className="flex min-h-screen w-full flex-col bg-richblack-900 font-inter overflow-x-hidden">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -100,6 +100,7 @@ function App() {
         />
         {/* Private Route - for Only Logged in User */}
         <Route
+          path="dashboard"
           element={
             <PrivateRoute>
               <Dashboard />
@@ -107,31 +108,17 @@ function App() {
           }
         >
           {/* Route for all users */}
-          <Route path="dashboard/my-profile" element={<MyProfile />} />
-          <Route path="dashboard/Settings" element={<Settings />} />
+          <Route index element={<Navigate to="my-profile" replace />} />
+          <Route path="my-profile" element={<MyProfile />} />
           {/* Route only for Instructors */}
-          {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
-            <>
-              <Route path="dashboard/instructor" element={<Instructor />} />
-              <Route path="dashboard/my-courses" element={<MyCourses />} />
-              <Route path="dashboard/add-course" element={<AddCourse />} />
-              <Route
-                path="dashboard/edit-course/:courseId"
-                element={<EditCourse />}
-              />
-            </>
-          )}
+          <Route path="instructor" element={<Instructor />} />
+          <Route path="my-courses" element={<MyCourses />} />
+          <Route path="add-course" element={<AddCourse />} />
+          <Route path="edit-course/:courseId" element={<EditCourse />} />
           {/* Route only for Students */}
-          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
-            <>
-              <Route
-                path="dashboard/enrolled-courses"
-                element={<EnrolledCourses />}
-              />
-              <Route path="/dashboard/cart" element={<Cart />} />
-            </>
-          )}
-          <Route path="dashboard/settings" element={<Settings />} />
+          <Route path="enrolled-courses" element={<EnrolledCourses />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         {/* For the watching course lectures */}

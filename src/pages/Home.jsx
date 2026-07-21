@@ -19,7 +19,7 @@ function Home() {
   return (
     <div>
       {/* Section 1 */}
-      <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 text-white">
+      <div className="relative mx-auto flex w-full max-w-maxContent flex-col items-center justify-between gap-8 px-4 py-8 text-white sm:px-6">
         {/* Become a Instructor Button */}
         <Link to={"/signup"}>
           <div className="group mx-auto mt-16 w-fit rounded-full bg-richblack-800 p-1 font-bold text-richblack-200 drop-shadow-[0_1.5px_rgba(255,255,255,0.25)] transition-all duration-200 hover:scale-95 hover:drop-shadow-none">
@@ -45,7 +45,7 @@ function Home() {
         </div>
 
         {/* CTA Buttons */}
-        <div className="mt-8 flex flex-row gap-7">
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:gap-7">
           <CTAButton active={true} linkto={"/signup"}>
             Learn More
           </CTAButton>
@@ -55,7 +55,7 @@ function Home() {
         </div>
 
         {/* Video */}
-        <div className="mx-3 my-7 shadow-[10px_-5px_50px_-5px] shadow-blue-200">
+        <div className="mx-3 my-7 w-full max-w-[900px] overflow-hidden shadow-[10px_-5px_50px_-5px] shadow-blue-200">
           <video
             className="shadow-[20px_20px_rgba(255,255,255)]"
             muted
@@ -133,9 +133,9 @@ function Home() {
       <div className="bg-pure-greys-5 text-richblack-700">
         <div className="homepage_bg h-[320px]">
           {/* Explore Full Catagory Section */}
-          <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8">
+          <div className="mx-auto flex w-full max-w-maxContent flex-col items-center justify-between gap-8 px-4 sm:px-6">
             <div className="lg:h-[150px]"></div>
-            <div className="flex flex-row gap-7 text-white lg:mt-8">
+            <div className="flex flex-row flex-wrap gap-4 text-white lg:mt-8">
               <CTAButton active={true} linkto={"/signup"}>
                 <div className="flex items-center gap-2">
                   Explore Full Catalog
@@ -149,7 +149,7 @@ function Home() {
           </div>
         </div>
 
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 ">
+        <div className="mx-auto flex w-full max-w-maxContent flex-col items-center justify-between gap-8 px-4 sm:px-6">
           {/* Job that is in Demand - Section 1 */}
           <div className="mb-10 mt-[-100px] flex flex-col justify-between gap-7 lg:mt-20 lg:flex-row lg:gap-0">
             <div className="text-4xl font-semibold lg:w-[45%] ">
@@ -177,7 +177,7 @@ function Home() {
       </div>
 
       {/* Section 3 */}
-      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
+      <div className="relative mx-auto my-20 flex w-full max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 px-4 py-8 text-white sm:px-6">
         {/* Become a instructor section */}
         <InstructorSection />
 

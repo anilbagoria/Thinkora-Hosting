@@ -16,7 +16,7 @@ const About = () => {
   return (
     <div>
       <section className="bg-richblack-900">
-        <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-white">
+        <div className="relative mx-auto flex w-full max-w-maxContent flex-col justify-between gap-10 px-4 py-12 text-center text-white sm:px-6">
           <header className="mx-auto py-20 text-4xl font-semibold lg:w-[70%]">
             Driving Innovation in Online Education for a
             <HighlightText text={"Brighter Future"} />
@@ -28,23 +28,23 @@ const About = () => {
             </p>
           </header>
           <div className="sm:h-[70px] lg:h-[150px]"></div>
-          <div className="absolute bottom-0 left-[50%] grid w-[100%] translate-x-[-50%] translate-y-[30%] grid-cols-3 gap-3 lg:gap-5">
-            <img src={BannerImage1} alt="" />
-            <img src={BannerImage2} alt="" />
-            <img src={BannerImage3} alt="" />
+          <div className="absolute bottom-0 left-[50%] grid w-[100%] max-w-[1200px] translate-x-[-50%] translate-y-[30%] grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-3 lg:gap-5">
+            <img src={BannerImage1} alt="" className="w-full rounded-xl object-cover" />
+            <img src={BannerImage2} alt="" className="w-full rounded-xl object-cover" />
+            <img src={BannerImage3} alt="" className="w-full rounded-xl object-cover" />
           </div>
         </div>
       </section>
 
       <section className="border-b border-richblack-700">
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
+        <div className="mx-auto flex w-full max-w-maxContent flex-col justify-between gap-10 px-4 py-10 text-richblack-500 sm:px-6">
           <div className="h-[100px] "></div>
           <Quote />
         </div>
       </section>
 
       <section>
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
+        <div className="mx-auto flex w-full max-w-maxContent flex-col justify-between gap-10 px-4 py-10 text-richblack-500 sm:px-6">
           <div className="flex flex-col items-center gap-10 lg:flex-row justify-between">
             <div className="my-24 flex lg:w-[50%] flex-col gap-10">
               <h1 className="bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCB045] bg-clip-text text-4xl font-semibold text-transparent lg:w-[70%] ">
@@ -103,12 +103,12 @@ const About = () => {
       </section>
 
       <StatsComponenet />
-      <section className="mx-auto mt-20 flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white">
+      <section className="mx-auto mt-20 flex w-full max-w-maxContent flex-col justify-between gap-10 px-4 text-white sm:px-6">
         <LearningGrid />
         <ContactFormSection />
       </section>
 
-      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
+      <div className="relative mx-auto my-20 flex w-full max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 px-4 py-8 text-white sm:px-6">
         {/* Reviws from Other Learner */}
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners

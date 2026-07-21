@@ -13,6 +13,7 @@ require("dotenv").config()
 
 exports.signup = async (req, res) => {
   try {
+    console.log('signup called with body:', JSON.stringify(req.body))
     // Destructure fields from the request body
     const {
       firstName,
@@ -47,6 +48,23 @@ exports.signup = async (req, res) => {
       })
     }
 
+    // ✅ FIXED: Add password strength validation
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 8 characters long",
+      })
+    }
+
+    // Check for at least one number, one uppercase, and one lowercase letter
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+      })
+    }
+
     // Check if user already exists
     const existingUser = await User.findOne({ email })
     if (existingUser) {
@@ -56,7 +74,7 @@ exports.signup = async (req, res) => {
       })
     }
 
-    // Find the most recent OTP for the email
+    // ✅ FIXED: Find the most recent OTP and verify expiry
     const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
     console.log(response)
     if (response.length === 0) {
@@ -65,13 +83,32 @@ exports.signup = async (req, res) => {
         success: false,
         message: "The OTP is not valid",
       })
-    } else if (otp !== response[0].otp) {
+    } 
+    
+    // ✅ FIXED: Check OTP expiry (5 minutes)
+    const otpDocument = response[0]
+    const otpCreatedAt = new Date(otpDocument.createdAt)
+    const currentTime = new Date()
+    const timeDifference = (currentTime - otpCreatedAt) / 1000 // in seconds
+    
+    if (timeDifference > 300) { // 5 minutes = 300 seconds
+      return res.status(400).json({
+        success: false,
+        message: "OTP has expired. Please request a new one.",
+      })
+    }
+    
+    // ✅ FIXED: Use strict comparison
+    if (otp !== otpDocument.otp) {
       // Invalid OTP
       return res.status(400).json({
         success: false,
         message: "The OTP is not valid",
       })
     }
+
+    // ✅ FIXED: Delete used OTP to prevent reuse
+    await OTP.deleteMany({ email })
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -116,6 +153,7 @@ exports.signup = async (req, res) => {
 // Login controller for authenticating users
 exports.login = async (req, res) => {
   try {
+    console.log('login called with body:', JSON.stringify(req.body))
     // Get email and password from request body
     const { email, password } = req.body
 
@@ -183,46 +221,86 @@ exports.login = async (req, res) => {
 exports.sendotp = async (req, res) => {
   try {
     const { email } = req.body
+    console.log(`sendotp called for email: ${email}`)
+
+    // ✅ FIXED: Validate email format
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      })
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid email address",
+      })
+    }
 
     // Check if user is already present
-    // Find user with provided email
     const checkUserPresent = await User.findOne({ email })
-    // to be used in case of signup
 
     // If user found with provided email
     if (checkUserPresent) {
-      // Return 401 Unauthorized status code with error message
       return res.status(401).json({
         success: false,
         message: `User is Already Registered`,
       })
     }
 
+    // ✅ FIXED: Generate unique OTP with proper loop logic
     var otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
     })
-    const result = await OTP.findOne({ otp: otp })
+    
+    // Ensure OTP is unique (fixed infinite loop bug)
+    let result = await OTP.findOne({ otp: otp })
     console.log("Result is Generate OTP Func")
     console.log("OTP", otp)
     console.log("Result", result)
+    
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
+        lowerCaseAlphabets: false,
+        specialChars: false,
+      })
+      result = await OTP.findOne({ otp: otp }) // ✅ FIXED: Re-query to check new OTP
+    }
+    
+    const otpPayload = { email, otp }
+    
+    // ✅ FIXED: Add error handling for OTP creation and email sending
+    try {
+      const otpBody = await OTP.create(otpPayload)
+      console.log("✅ OTP Created and Email Sent Successfully", otpBody)
+    } catch (otpError) {
+      console.error("❌ Error creating OTP or sending email:", otpError.message)
+      
+      return res.status(500).json({
+        success: false,
+        message: "Failed to send OTP. Please check server logs or email configuration.",
+        error: process.env.NODE_ENV === "development" ? otpError.message : undefined,
       })
     }
-    const otpPayload = { email, otp }
-    const otpBody = await OTP.create(otpPayload)
-    console.log("OTP Body", otpBody)
+    
+    // ✅ FIXED: Don't expose OTP in response (security issue)
     res.status(200).json({
       success: true,
-      message: `OTP Sent Successfully`,
-      otp,
+      message: `OTP Sent Successfully to ${email}`,
     })
   } catch (error) {
-    console.log(error.message)
-    return res.status(500).json({ success: false, error: error.message })
+    console.error("❌ Signup OTP Error:", error.message)
+    return res.status(500).json({ 
+      success: false, 
+      message: "Error sending OTP. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    })
   }
 }
 

@@ -13,24 +13,26 @@ export default function EnrolledCourses() {
   const [enrolledCourses, setEnrolledCourses] = useState(null)
 
   useEffect(() => {
+    if (!token) return
+
     ;(async () => {
       try {
         const res = await getUserEnrolledCourses(token) // Getting all the published and the drafted courses
+        console.log("EnrolledCourses: API returned", res)
+
+        // Ensure we have an array
+        const safeRes = Array.isArray(res) ? res : []
 
         // Filtering the published course out
-        const filterPublishCourse = res.filter((ele) => ele.status !== "Draft")
-        // console.log(
-        //   "Viewing all the couse that is Published",
-        //   filterPublishCourse
-        // )
+        const filterPublishCourse = safeRes.filter((ele) => ele.status !== "Draft")
 
         setEnrolledCourses(filterPublishCourse)
       } catch (error) {
-        console.log("Could not fetch enrolled courses.")
+        console.log("Could not fetch enrolled courses.", error)
+        setEnrolledCourses([])
       }
     })()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [token])
 
   return (
     <>
@@ -45,54 +47,70 @@ export default function EnrolledCourses() {
           {/* TODO: Modify this Empty State */}
         </p>
       ) : (
-        <div className="my-8 text-richblack-5">
+        <div className="my-8 text-richblack-5 space-y-4">
           {/* Headings */}
-          <div className="flex rounded-t-lg bg-richblack-500 ">
+          <div className="hidden rounded-t-lg bg-richblack-500 lg:flex">
             <p className="w-[45%] px-5 py-3">Course Name</p>
             <p className="w-1/4 px-2 py-3">Duration</p>
             <p className="flex-1 px-2 py-3">Progress</p>
           </div>
           {/* Course Names */}
-          {enrolledCourses.map((course, i, arr) => (
-            <div
-              className={`flex items-center border border-richblack-700 ${
-                i === arr.length - 1 ? "rounded-b-lg" : "rounded-none"
-              }`}
-              key={i}
-            >
+          {enrolledCourses.map((course, i, arr) => {
+            const id = course?._id ?? i
+            const description = course?.courseDescription ?? ""
+            const shortDesc =
+              description.length > 50 ? `${description.slice(0, 50)}...` : description
+            const sectionId = course?.courseContent?.[0]?._id ?? ""
+            const subSectionId =
+              course?.courseContent?.[0]?.subSection?.[0]?._id ?? ""
+
+            return (
               <div
-                className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
-                onClick={() => {
-                  navigate(
-                    `/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
-                  )
-                }}
+                className={`min-w-0 flex flex-col gap-4 border border-richblack-700 ${
+                  i === arr.length - 1 ? "rounded-b-lg" : "rounded-none"
+                } lg:flex-row lg:items-center`}
+                key={id}
               >
-                <img
-                  src={course.thumbnail}
-                  alt="course_img"
-                  className="h-14 w-14 rounded-lg object-cover"
-                />
-                <div className="flex max-w-xs flex-col gap-2">
-                  <p className="font-semibold">{course.courseName}</p>
-                  <p className="text-xs text-richblack-300">
-                    {course.courseDescription.length > 50
-                      ? `${course.courseDescription.slice(0, 50)}...`
-                      : course.courseDescription}
+                <div
+                  className="flex w-full cursor-pointer items-center gap-4 px-5 py-3 lg:w-[45%]"
+                  onClick={() => {
+                    if (sectionId && subSectionId) {
+                      navigate(
+                        `/view-course/${course?._id}/section/${sectionId}/sub-section/${subSectionId}`
+                      )
+                    }
+                  }}
+                >
+                  <img
+                    src={course?.thumbnail}
+                    alt="course_img"
+                    className="h-14 w-14 rounded-lg object-cover"
+                  />
+                  <div className="min-w-0 flex max-w-full flex-col gap-2">
+                    <p className="font-semibold">{course?.courseName}</p>
+                    <p className="text-xs text-richblack-300">{shortDesc}</p>
+                  </div>
+                </div>
+                <div className="min-w-0 grid w-full gap-2 px-5 py-3 lg:w-1/4">
+                  <p className="text-sm font-semibold text-richblack-300 lg:hidden">
+                    Duration
                   </p>
+                  <p>{course?.totalDuration ?? "Not available"}</p>
+                </div>
+                <div className="min-w-0 grid w-full gap-2 px-5 py-3 lg:w-1/5">
+                  <p className="text-sm font-semibold text-richblack-300 lg:hidden">
+                    Progress
+                  </p>
+                  <p>Progress: {course?.progressPercentage || 0}%</p>
+                  <ProgressBar
+                    completed={course?.progressPercentage || 0}
+                    height="8px"
+                    isLabelVisible={false}
+                  />
                 </div>
               </div>
-              <div className="w-1/4 px-2 py-3">{course?.totalDuration}</div>
-              <div className="flex w-1/5 flex-col gap-2 px-2 py-3">
-                <p>Progress: {course.progressPercentage || 0}%</p>
-                <ProgressBar
-                  completed={course.progressPercentage || 0}
-                  height="8px"
-                  isLabelVisible={false}
-                />
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </>

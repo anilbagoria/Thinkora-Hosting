@@ -1,14 +1,14 @@
 {
-	"name": "studynotion-backend",
+	"name": "thinkora-backend",
 	"version": "1.0.0",
-	"description": "studynotion-backend",
+	"description": "thinkora-backend",
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
 		"dev": "nodemon index.js"
 	},
 	"keywords": [
-		"studynotion-backend"
+		"thinkora-backend"
 	],
 	"author": "Saikat Mukherjee",
 	"license": "ISC",

@@ -35,15 +35,15 @@ function UpdatePassword() {
   }
 
   return (
-    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
+    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center px-4 py-8 sm:px-6">
       {loading ? (
         <div className="spinner"></div>
       ) : (
-        <div className="max-w-[500px] p-4 lg:p-8">
-          <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
+        <div className="w-full max-w-[500px] rounded-3xl bg-richblack-900 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.25)] lg:p-8">
+          <h1 className="text-3xl font-semibold leading-tight text-richblack-5">
             Choose new password
           </h1>
-          <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
+          <p className="my-4 text-base leading-7 text-richblack-100 sm:text-lg">
             Almost done. Enter your new password and youre all set.
           </p>
           <form onSubmit={handleOnSubmit}>
@@ -103,7 +103,7 @@ function UpdatePassword() {
               Reset Password
             </button>
           </form>
-          <div className="mt-6 flex items-center justify-between">
+          <div className="mt-6 flex flex-col gap-y-4 sm:flex-row sm:items-center sm:justify-between">
             <Link to="/login">
               <p className="flex items-center gap-x-2 text-richblack-5">
                 <BiArrowBack /> Back To Login

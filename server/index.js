@@ -40,6 +40,16 @@ app.use(
     credentials: true,
   })
 );
+
+// Simple request logger to help debug incoming requests
+app.use((req, res, next) => {
+  try {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl}`);
+  } catch (e) {
+    // ignore logging errors
+  }
+  next();
+});
 app.use(
   fileUpload({
     useTempFiles: true,

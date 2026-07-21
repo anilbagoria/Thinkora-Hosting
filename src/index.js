@@ -19,7 +19,32 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <App />
-        <Toaster />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: "#161D29",
+              color: "#F1F2FF",
+              border: "1px solid #FFD60A",
+              boxShadow: "0 18px 50px rgba(0, 0, 0, 0.25)",
+              borderRadius: "16px",
+              fontFamily: "Inter, sans-serif",
+            },
+            success: {
+              iconTheme: {
+                primary: "#FFD60A",
+                secondary: "#161D29",
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: "#EF476F",
+                secondary: "#161D29",
+              },
+            },
+          }}
+        />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

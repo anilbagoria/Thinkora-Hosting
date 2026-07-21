@@ -1,9 +1,6 @@
 import React from "react";
 import { FooterLink2 } from "../../data/footer-links";
-import { Link } from "react-router-dom";
-
-// Images
-import Logo from "../../assets/Logo/finallogo.jpg";
+import { toast } from "react-hot-toast";
 
 // Icons
 import { FaFacebook, FaGoogle, FaTwitter, FaYoutube } from "react-icons/fa";
@@ -23,14 +20,38 @@ const Plans = ["Paid memberships", "For students", "Business solutions"];
 const Community = ["Forums", "Chapters", "Events"];
 
 const Footer = () => {
+  const handleComingSoon = () =>
+    toast.custom(
+      (t) => (
+        <div
+          className="flex items-center gap-3 rounded-2xl border border-yellow-25/50 bg-richblack-900 px-5 py-4 text-sm text-richblack-5 shadow-[0_14px_40px_rgba(0,0,0,0.35)]"
+          style={{
+            minWidth: "260px",
+          }}
+        >
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-yellow-25 text-richblack-900">
+            🚀
+          </div>
+          <div>
+            <div className="font-semibold text-richblack-5">Coming Soon</div>
+            <div className="text-xs text-richblack-100">This feature is on the way.</div>
+          </div>
+        </div>
+      ),
+      { duration: 2800 }
+    );
+
   return (
     <div className="bg-richblack-800">
-      <div className="flex lg:flex-row gap-8 items-center justify-between w-11/12 max-w-maxContent text-richblack-400 leading-6 mx-auto relative py-14">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between w-full max-w-maxContent px-4 py-14 text-richblack-400 leading-6 mx-auto relative sm:px-6">
         <div className="border-b w-[100%] flex flex-col lg:flex-row pb-5 border-richblack-700">
           {/* Section 1 */}
           <div className="lg:w-[50%] flex flex-wrap flex-row justify-between lg:border-r lg:border-richblack-700 pl-3 lg:pr-5 gap-3">
             <div className="w-[30%] flex flex-col gap-3 lg:w-[30%] mb-7 lg:pl-0">
-              <img src={Logo} alt="" className="object-contain" />
+              <div className="inline-flex items-center gap-0 text-2xl font-semibold tracking-tight">
+                <span className="text-richblack-5">Think</span>
+                <span className="text-yellow-25">ora</span>
+              </div>
               <h1 className="text-richblack-50 font-semibold text-[16px]">
                 Company
               </h1>
@@ -41,7 +62,9 @@ const Footer = () => {
                       key={i}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.toLowerCase()}>{ele}</Link>
+                      <button type="button" onClick={handleComingSoon} className="text-left text-[14px] w-full cursor-pointer hover:text-richblack-50 transition-all duration-200 focus:outline-none">
+                        {ele}
+                      </button>
                     </div>
                   );
                 })}
@@ -67,9 +90,13 @@ const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
+                      <button
+                        type="button"
+                        onClick={handleComingSoon}
+                        className="text-left text-[14px] w-full cursor-pointer hover:text-richblack-50 transition-all duration-200 focus:outline-none"
+                      >
                         {ele}
-                      </Link>
+                      </button>
                     </div>
                   );
                 })}
@@ -79,7 +106,9 @@ const Footer = () => {
                 Support
               </h1>
               <div className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200 mt-2">
-                <Link to={"/help-center"}>Help Center</Link>
+                <button type="button" onClick={handleComingSoon} className="text-left w-full focus:outline-none">
+                  Help Center
+                </button>
               </div>
             </div>
 
@@ -95,9 +124,13 @@ const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
+                      <button
+                        type="button"
+                        onClick={handleComingSoon}
+                        className="text-left text-[14px] w-full cursor-pointer hover:text-richblack-50 transition-all duration-200 focus:outline-none"
+                      >
                         {ele}
-                      </Link>
+                      </button>
                     </div>
                   );
                 })}
@@ -113,9 +146,13 @@ const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
+                      <button
+                        type="button"
+                        onClick={handleComingSoon}
+                        className="text-left text-[14px] w-full cursor-pointer hover:text-richblack-50 transition-all duration-200 focus:outline-none"
+                      >
                         {ele}
-                      </Link>
+                      </button>
                     </div>
                   );
                 })}
@@ -138,7 +175,9 @@ const Footer = () => {
                           key={index}
                           className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                         >
-                          <Link to={link.link}>{link.title}</Link>
+                          <button type="button" onClick={handleComingSoon} className="text-left text-[14px] w-full cursor-pointer hover:text-richblack-50 transition-all duration-200 focus:outline-none">
+                            {link.title}
+                          </button>
                         </div>
                       );
                     })}
@@ -150,7 +189,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="flex flex-row items-center justify-between w-11/12 max-w-maxContent text-richblack-400 mx-auto  pb-14 text-sm">
+      <div className="flex flex-col items-start justify-between gap-4 w-full max-w-maxContent px-4 text-richblack-400 mx-auto pb-14 text-sm sm:flex-row sm:items-center sm:px-6">
         {/* Section 1 */}
         <div className="flex justify-between lg:items-start items-center flex-col lg:flex-row gap-3 w-full">
           <div className="flex flex-row">
@@ -164,9 +203,9 @@ const Footer = () => {
                       : "border-r border-richblack-700 cursor-pointer hover:text-richblack-50 transition-all duration-200"
                   } px-3 `}
                 >
-                  <Link to={ele.split(" ").join("-").toLocaleLowerCase()}>
+                  <button type="button" onClick={handleComingSoon} className="text-left text-[14px] w-full cursor-pointer hover:text-richblack-50 transition-all duration-200 focus:outline-none">
                     {ele}
-                  </Link>
+                  </button>
                 </div>
               );
             })}

@@ -125,7 +125,7 @@ export default function SubSectionModal({
 
   return (
     <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
-      <div className="my-10 w-11/12 max-w-[700px] rounded-lg border border-richblack-400 bg-richblack-800">
+      <div className="my-10 w-full max-w-[700px] rounded-lg border border-richblack-400 bg-richblack-800 mx-4 sm:mx-0">
         {/* Modal Header */}
         <div className="flex items-center justify-between rounded-t-lg bg-richblack-700 p-5">
           <p className="text-xl font-semibold text-richblack-5">
@@ -138,7 +138,7 @@ export default function SubSectionModal({
         {/* Modal Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-8 px-8 py-10"
+          className="space-y-8 px-4 py-8 sm:px-8 sm:py-10"
         >
           {/* Lecture Video Upload */}
           <Upload

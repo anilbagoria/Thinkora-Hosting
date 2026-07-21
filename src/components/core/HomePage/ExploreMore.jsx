@@ -41,6 +41,21 @@ const ExploreMore = () => {
       </div>
 
       {/* Tabs Section */}
+      <div className="flex lg:hidden gap-3 overflow-x-auto px-2 py-2 text-sm">
+        {tabsName.map((tab, index) => (
+          <div
+            key={index}
+            className={`min-w-max rounded-full px-4 py-2 text-[14px] transition-all duration-200 ${
+              currentTab === tab
+                ? "bg-richblack-900 text-richblack-5 font-medium"
+                : "bg-richblack-800 text-richblack-200"
+            } cursor-pointer hover:bg-richblack-900 hover:text-richblack-5`}
+            onClick={() => setMyCards(tab)}
+          >
+            {tab}
+          </div>
+        ))}
+      </div>
       <div className="hidden lg:flex gap-5 -mt-5 mx-auto w-max bg-richblack-800 text-richblack-200 p-1 rounded-full font-medium drop-shadow-[0_1.5px_rgba(255,255,255,0.25)]">
         {tabsName.map((tab, index) => (
           <div

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-import { BuyCourse } from "../../../../services/operations/studentFeaturesAPI"
-import IconBtn from "../../../Common/IconBtn"
+import { BuyCourse } from "../../../../../services/operations/studentFeaturesAPI"
+import IconBtn from "../../../../Common/IconBtn"
 
 export default function RenderTotalAmount() {
   const { total, cart } = useSelector((state) => state.cart)
@@ -17,7 +17,7 @@ export default function RenderTotalAmount() {
   }
 
   return (
-    <div className="min-w-[280px] rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
+    <div className="w-full max-w-[280px] rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6 mx-auto lg:mx-0">
       <p className="mb-1 text-sm font-medium text-richblack-300">Total:</p>
       <p className="mb-6 text-3xl font-medium text-yellow-100">₹ {total}</p>
       <IconBtn
