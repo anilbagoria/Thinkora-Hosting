@@ -6,7 +6,7 @@
 
 ## 🚀 Live Demo
 
-* 🌐 **Website:** https://thinkora-frontend.vercel.app
+* 🌐 **Website:** [https://thinkora-frontend.vercel.app](https://thinkora-forntend.vercel.app/)
 * 🔗 **Backend API:** [https://api.your-domain.com](https://thinkora-backend-en7h.onrender.com/api/v1)
 
 > **Deployment**
