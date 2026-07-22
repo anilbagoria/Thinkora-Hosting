@@ -3,14 +3,16 @@ require("dotenv").config();
 const mailSender = async (email, title, body) => {
   try {
     const brevoApiKey = process.env.BREVO_API_KEY;
-    const brevoSenderEmail = process.env.BREVO_SENDER_EMAIL || process.env.MAIL_USER;
+    const brevoSenderEmail = process.env.BREVO_SENDER_EMAIL;
 
     if (!brevoApiKey) {
       throw new Error("BREVO_API_KEY is not configured in Render environment");
     }
 
     if (!brevoSenderEmail) {
-      throw new Error("BREVO_SENDER_EMAIL or MAIL_USER is not configured");
+      throw new Error(
+        "BREVO_SENDER_EMAIL is not configured. Use a verified Brevo sender email or domain."
+      );
     }
 
     const response = await fetch("https://api.brevo.com/v3/smtp/email", {
@@ -39,6 +41,7 @@ const mailSender = async (email, title, body) => {
     }
 
     console.log("✅ Brevo Mail Response:", data);
+    console.log("✅ Using verified Brevo sender:", brevoSenderEmail);
     return data;
   } catch (error) {
     console.error("❌ Mail Send Error:", error.message);
