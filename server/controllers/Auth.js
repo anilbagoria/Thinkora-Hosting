@@ -280,24 +280,17 @@ exports.sendotp = async (req, res) => {
       const otpBody = await OTP.create(otpPayload)
       console.log("✅ OTP Created Successfully", otpBody)
 
-      // Return success immediately so the frontend can continue.
-      // Email delivery is attempted in the background and any error is logged instead of blocking the response.
-      res.status(200).json({
-        success: true,
-        message: `OTP Sent Successfully to ${email}`,
-      })
-
-      mailSender(
+      const emailResult = await mailSender(
         email,
         "Verification Email from Thinkora",
         emailTemplate(otp)
       )
-        .then((emailResult) => {
-          console.log("✅ OTP Email send response:", emailResult?.response || emailResult)
-        })
-        .catch((emailError) => {
-          console.error("⚠️ OTP email delivery failed after OTP was created:", emailError.message)
-        })
+      console.log("✅ OTP Email send response:", emailResult?.response || emailResult)
+
+      res.status(200).json({
+        success: true,
+        message: `OTP Sent Successfully to ${email}`,
+      })
     } catch (otpError) {
       console.error("❌ Error creating OTP or sending email:", otpError.message)
 
